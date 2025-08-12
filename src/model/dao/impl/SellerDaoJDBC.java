@@ -1,7 +1,6 @@
 package model.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +39,7 @@ public class SellerDaoJDBC implements SellerDao {
 		
 			ps.setString(1, seller.getName());
 			ps.setString(2, seller.getEmail());
-			ps.setDate(3, new Date(seller.getBirthDate().getTime()));
+			ps.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
 			ps.setDouble(4, seller.getBaseSalary());
 			ps.setInt(5, seller.getDepartment().getId());
 	
@@ -78,7 +77,7 @@ public class SellerDaoJDBC implements SellerDao {
 		
 			ps.setString(1, seller.getName());
 			ps.setString(2, seller.getEmail());
-			ps.setDate(3, new Date(seller.getBirthDate().getTime()));
+			ps.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
 			ps.setDouble(4, seller.getBaseSalary());
 			ps.setInt(5, seller.getDepartment().getId());
 			ps.setInt(6, seller.getId());
@@ -219,7 +218,7 @@ public class SellerDaoJDBC implements SellerDao {
 		seller.setId(rs.getInt("Id"));
 		seller.setName(rs.getString("Name"));
 		seller.setEmail(rs.getString("Email"));
-		seller.setBirthDate(rs.getDate("BirthDate"));
+		seller.setBirthDate(new java.util.Date(rs.getTimestamp("BirthDate").getTime()));
 		seller.setBaseSalary(rs.getDouble("BaseSalary"));
 		seller.setDepartment(dep);
 		return seller;
