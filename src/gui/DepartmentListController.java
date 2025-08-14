@@ -146,7 +146,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 				updateTableView();
 			}
 			catch (DbIntegrityException e) {
-				Alerts.showAlert("Error removing objecto", null, e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Error removing object", null, e.getMessage(), AlertType.ERROR);
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			dialogStage.showAndWait();
 		}
 		catch (IOException e) {
-	//		e.printStackTrace(null);
+//			e.printStackTrace(null);
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}

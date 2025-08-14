@@ -25,11 +25,14 @@
         </items>
       </ToolBar>
       <TableView fx:id="tableViewDepartment" prefHeight="200.0" prefWidth="200.0">
+      	<columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
         <columns>
-          <TableColumn fx:id="tableColumnId" minWidth="20.0" prefWidth="40.0" text="Id" />
-          <TableColumn fx:id="tableColumnName" minWidth="30.0" prefWidth="120.0" text="Name" />
+          <TableColumn fx:id="tableColumnId" prefWidth="50.0" resizable="false" text="Id" />
+          <TableColumn fx:id="tableColumnName" minWidth="60.0" prefWidth="120.0" text="Name" />
             <TableColumn fx:id="tableColumnEdit" minWidth="50.0" prefWidth="50.0" resizable="false" />
-            <TableColumn fx:id="tableColumnRemove" minWidth="65.0" prefWidth="65.0" resizable="false" />
+            <TableColumn fx:id="tableColumnRemove" prefWidth="65.0" resizable="false" />
         </columns>
       </TableView>
    </children>

@@ -13,6 +13,7 @@ import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +31,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.entities.Department;
 import model.entities.Seller;
 import model.services.DepartmentService;
 import model.services.SellerService;
@@ -55,6 +57,9 @@ public class SellerListController implements Initializable, DataChangeListener {
 	
 	@FXML
 	private TableColumn<Seller, Double> tableColumnBaseSalary;
+	
+	@FXML
+	private TableColumn<Seller, String> tableColumnDepartment;
 
 	@FXML
 	private TableColumn<Seller, Seller> tableColumnEdit;
@@ -65,7 +70,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 	@FXML
 	private Button btNew;
 	
-	private ObservableList<Seller> obsList;
+	private ObservableList<Seller> sellerList;
 	
 	@FXML
 	public void onBtNewAction(ActionEvent event) {
@@ -74,10 +79,10 @@ public class SellerListController implements Initializable, DataChangeListener {
 		createDialogForm(obj, "/gui/SellerForm.fxml", parentStage);
 	}
 	
-	public void setSellerService(SellerService service) {
+	public void setServices(SellerService service, DepartmentService departmentService) {
 		this.service = service;
-	}
-		
+	}	
+			
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		
@@ -94,6 +99,11 @@ public class SellerListController implements Initializable, DataChangeListener {
 		tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
 		Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 		
+		tableColumnDepartment.setCellValueFactory(cellData -> {
+		    Department department = cellData.getValue().getDepartment();
+		    return (department != null) ? new SimpleStringProperty(department.getName()) : new SimpleStringProperty("");
+		});
+		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		
 		tableViewSeller.prefHeightProperty().bind(stage.heightProperty());
@@ -104,8 +114,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 			throw new IllegalStateException("Service was null");
 		}
 		List<Seller> list = service.findAll();
-		obsList = FXCollections.observableArrayList(list);
-		tableViewSeller.setItems(obsList);
+		sellerList = FXCollections.observableArrayList(list);
+		tableViewSeller.setItems(sellerList);
 		initEditButtons();
 		initRemoveButtons();
 	}
@@ -162,11 +172,10 @@ public class SellerListController implements Initializable, DataChangeListener {
 				updateTableView();
 			}
 			catch (DbIntegrityException e) {
-				Alerts.showAlert("Error removing objecto", null, e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Error removing object", null, e.getMessage(), AlertType.ERROR);
 			}
 		}
 	}
-
 
 	private void createDialogForm(Seller obj, String absoluteName, Stage parentStage) {
 		try {
@@ -192,10 +201,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Erros loading view", e.getMessage(), AlertType.ERROR);
 		}
-		
 	}
-
-
+	
 	@Override
 	public void onDataChanged() {
 		updateTableView();
